@@ -15,6 +15,8 @@ export {
   handleNewTab,
   handleOpenBrowser,
   handleNavigateAndScreenshot,
+  handleEkyteLogin,
+  handleEkyteLoginAndNavigate,
   startBrowserCleanup
 } from './puppeteer/index.js';
 
@@ -53,7 +55,9 @@ import {
   handleGetContent,
   handleNewTab,
   handleOpenBrowser,
-  handleNavigateAndScreenshot
+  handleNavigateAndScreenshot,
+  handleEkyteLogin,
+  handleEkyteLoginAndNavigate
 } from './puppeteer/index.js';
 
 import {
@@ -77,6 +81,8 @@ export const toolHandlers = {
   'puppeteer_new_tab': handleNewTab,
   'open_browser': handleOpenBrowser,
   'puppeteer_navigate_and_screenshot': handleNavigateAndScreenshot,
+  'ekyte_login': handleEkyteLogin,
+  'ekyte_login_and_navigate': handleEkyteLoginAndNavigate,
   
   // Browser
   'browser_open_url': handleOpenUrl,

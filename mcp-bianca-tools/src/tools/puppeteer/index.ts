@@ -340,6 +340,160 @@ export async function handleNavigateAndScreenshot(params: { url: string, path: s
   }
 }
 
+// Nova função para login automático no Ekyte
+export async function handleEkyteLogin(params: { email: string, password: string, screenshotPath?: string }) {
+  console.log(`🔐 Iniciando login no Ekyte para: ${params.email}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Navegar para página de login
+    console.log(`🌐 Navegando para página de login...`);
+    await page.goto('https://app.ekyte.com/login', { 
+      waitUntil: 'networkidle2',
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    console.log(`⏳ Aguardando carregamento completo da página...`);
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // Aguardar campos de login aparecerem
+    console.log(`🔍 Procurando campos de login...`);
+    await page.waitForSelector('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', { timeout: 10000 });
+    
+    // Preencher email
+    console.log(`📧 Preenchendo email: ${params.email}`);
+    await page.type('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', params.email);
+    
+    // Preencher senha
+    console.log(`🔑 Preenchendo senha...`);
+    await page.type('input[type="password"], input[name="password"], #password, [placeholder*="senha"], [placeholder*="password"]', params.password);
+    
+    // Screenshot antes do login (opcional)
+    if (params.screenshotPath) {
+      console.log(`📸 Capturando screenshot antes do login...`);
+      await page.screenshot({ path: `${params.screenshotPath}-before-login.png`, fullPage: true });
+    }
+    
+    // Clicar no botão de login
+    console.log(`🚀 Clicando no botão de login...`);
+    await page.click('button[type="submit"], .btn-login, #login-btn, [class*="login"], [class*="entrar"]');
+    
+    // Aguardar redirecionamento
+    console.log(`⏳ Aguardando redirecionamento...`);
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // Verificar se login foi bem-sucedido
+    const currentUrl = await page.url();
+    const title = await page.title();
+    console.log(`✅ Login realizado! URL atual: ${currentUrl}`);
+    
+    // Screenshot após login
+    if (params.screenshotPath) {
+      console.log(`📸 Capturando screenshot após login...`);
+      await page.screenshot({ path: `${params.screenshotPath}-after-login.png`, fullPage: true });
+    }
+    
+    return successResponse(
+      { currentUrl, title, email: params.email },
+      `Login realizado com sucesso no Ekyte para ${params.email}`
+    );
+  } catch (error) {
+    console.error(`❌ Erro no login:`, error);
+    throw new MCPError(
+      ErrorCode.PAGE_LOAD_FAILED, 
+      `Falha no login do Ekyte: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+    );
+  }
+}
+
+// Nova função para login + navegação + screenshot no Ekyte
+export async function handleEkyteLoginAndNavigate(params: { 
+  email: string, 
+  password: string, 
+  targetUrl: string,
+  screenshotPath: string,
+  fullPage?: boolean 
+}) {
+  console.log(`🚀 Iniciando processo completo: Login + Navegação + Screenshot`);
+  console.log(`📧 Email: ${params.email}`);
+  console.log(`🎯 URL destino: ${params.targetUrl}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // 1. FAZER LOGIN
+    console.log(`🔐 ETAPA 1: Fazendo login...`);
+    await page.goto('https://app.ekyte.com/login', { 
+      waitUntil: 'networkidle2',
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    console.log(`⏳ Aguardando carregamento da página de login...`);
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // Aguardar e preencher campos
+    console.log(`🔍 Procurando campos de login...`);
+    await page.waitForSelector('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', { timeout: 10000 });
+    
+    console.log(`📧 Preenchendo email...`);
+    await page.type('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', params.email);
+    
+    console.log(`🔑 Preenchendo senha...`);
+    await page.type('input[type="password"], input[name="password"], #password, [placeholder*="senha"], [placeholder*="password"]', params.password);
+    
+    console.log(`🚀 Clicando em login...`);
+    await page.click('button[type="submit"], .btn-login, #login-btn, [class*="login"], [class*="entrar"]');
+    
+    console.log(`⏳ Aguardando redirecionamento após login...`);
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // 2. NAVEGAR PARA URL DESEJADA
+    console.log(`🌐 ETAPA 2: Navegando para ${params.targetUrl}...`);
+    await page.goto(params.targetUrl, { 
+      waitUntil: 'networkidle2',
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    console.log(`⏳ Aguardando carregamento completo...`);
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // 3. CAPTURAR SCREENSHOT
+    console.log(`📸 ETAPA 3: Capturando screenshot...`);
+    const currentUrl = await page.url();
+    const title = await page.title();
+    
+    console.log(`📄 Página atual: ${title}`);
+    console.log(`🌐 URL atual: ${currentUrl}`);
+    
+    await page.screenshot({
+      path: params.screenshotPath as any,
+      fullPage: params.fullPage || true
+    });
+    
+    console.log(`✅ PROCESSO COMPLETO! Screenshot salvo em: ${params.screenshotPath}`);
+    
+    return successResponse(
+      { 
+        currentUrl, 
+        title, 
+        email: params.email,
+        screenshotPath: params.screenshotPath,
+        targetUrl: params.targetUrl
+      },
+      `Login, navegação e screenshot realizados com sucesso! URL: ${currentUrl}`
+    );
+  } catch (error) {
+    console.error(`❌ Erro no processo completo:`, error);
+    throw new MCPError(
+      ErrorCode.PAGE_LOAD_FAILED, 
+      `Falha no processo completo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+    );
+  }
+}
+
 // Metadados das ferramentas Puppeteer
 export const puppeteerTools = [
   {
@@ -429,6 +583,34 @@ export const puppeteerTools = [
         fullPage: { type: 'boolean', description: 'Capture full page', default: false }
       },
       required: ['url', 'path']
+    }
+  },
+  {
+    name: 'ekyte_login',
+    description: 'Login to Ekyte platform with credentials and optional screenshots',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        screenshotPath: { type: 'string', description: 'Base path for screenshots (optional)' }
+      },
+      required: ['email', 'password']
+    }
+  },
+  {
+    name: 'ekyte_login_and_navigate',
+    description: 'Login to Ekyte and navigate to specific page with screenshot',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        targetUrl: { type: 'string', description: 'URL to navigate after login' },
+        screenshotPath: { type: 'string', description: 'Path to save screenshot' },
+        fullPage: { type: 'boolean', description: 'Capture full page', default: true }
+      },
+      required: ['email', 'password', 'targetUrl', 'screenshotPath']
     }
   }
 ];
