@@ -37,6 +37,21 @@ export const SearchAgentsSchema = z.object({
   path: z.string().default(DEFAULT_AGENTS_PATH)
 });
 
+export const ManageSkillsSchema = z.object({
+  action: z.enum(['discover', 'register', 'list', 'execute', 'evolve', 'analyze_context']),
+  skillData: z.object({
+    name: z.string(),
+    description: z.string(),
+    context: z.string(),
+    selectors: z.array(z.string()).optional(),
+    steps: z.array(z.string()).optional(),
+    triggers: z.array(z.string()).optional(),
+    difficulty: z.enum(['basic', 'intermediate', 'advanced', 'expert'])
+  }).optional(),
+  naturalLanguageQuery: z.string().optional(),
+  contextData: z.any().optional()
+});
+
 // Tipos
 export interface Agent {
   name: string;
@@ -292,6 +307,156 @@ export async function handleAnalyzeAgent(params: unknown) {
   }
 }
 
+// Handler para gerenciar habilidades dinâmicas do agente Ekyte
+export async function handleManageSkills(params: unknown) {
+  const validated = ManageSkillsSchema.parse(params);
+  
+  console.log(`🧠 Gerenciando habilidades do agente Ekyte: ${validated.action}`);
+  
+  const skillsPath = path.join(process.cwd(), '../workspace/ekyte-skills.json');
+  
+  try {
+    // Carregar habilidades existentes
+    let skills: any = {};
+    try {
+      const skillsContent = await fs.readFile(skillsPath, 'utf-8');
+      skills = JSON.parse(skillsContent);
+    } catch {
+      skills = {
+        version: '1.0.0',
+        lastUpdated: new Date().toISOString(),
+        totalSkills: 0,
+        skillsByDifficulty: {
+          basic: 0,
+          intermediate: 0,
+          advanced: 0,
+          expert: 0
+        },
+        skills: {},
+        learningHistory: [],
+        contextualMappings: {},
+        expertiseEvolution: []
+      };
+    }
+    
+    let result: any = {};
+    
+    switch (validated.action) {
+      case 'discover':
+        // Auto-descoberta de novas habilidades durante navegação
+        if (validated.contextData) {
+          const newSkills = await analyzePageForSkills(validated.contextData);
+          for (const skill of newSkills) {
+            await registerNewSkill(skills, skill);
+          }
+          result = {
+            discovered: newSkills.length,
+            skills: newSkills.map(s => s.name)
+          };
+        }
+        break;
+        
+      case 'register':
+        // Registro manual de nova habilidade
+        if (validated.skillData) {
+          await registerNewSkill(skills, validated.skillData);
+          result = {
+            registered: validated.skillData.name,
+            difficulty: validated.skillData.difficulty
+          };
+        }
+        break;
+        
+      case 'list':
+        // Listar todas as habilidades organizadas
+        result = {
+          totalSkills: skills.totalSkills,
+          skillsByDifficulty: skills.skillsByDifficulty,
+          recentlyLearned: skills.learningHistory.slice(-5),
+          availableSkills: Object.keys(skills.skills),
+          expertiseLevel: calculateExpertiseLevel(skills),
+          evolutionPath: skills.expertiseEvolution.slice(-3)
+        };
+        break;
+        
+      case 'execute':
+        // Executar habilidade baseada em linguagem natural
+        if (validated.naturalLanguageQuery) {
+          const matchedSkill = await matchSkillFromNaturalLanguage(skills, validated.naturalLanguageQuery);
+          if (matchedSkill) {
+            result = {
+              matchedSkill: matchedSkill.name,
+              confidence: matchedSkill.confidence,
+              executionPlan: matchedSkill.steps,
+              requiredTools: matchedSkill.selectors,
+              description: matchedSkill.description
+            };
+          } else {
+            result = {
+              message: 'Nenhuma habilidade correspondente encontrada',
+              suggestion: 'Tente descrever a ação de forma diferente ou registre uma nova habilidade'
+            };
+          }
+        }
+        break;
+        
+      case 'evolve':
+        // Evolução automática das habilidades baseada no uso
+        const evolved = await evolveSkills(skills);
+        result = {
+          evolved: evolved.length,
+          promotions: evolved,
+          newExpertiseLevel: calculateExpertiseLevel(skills)
+        };
+        break;
+        
+      case 'analyze_context':
+        // Análise contextual para sugerir próximas ações
+        if (validated.contextData) {
+          const suggestions = await analyzeContextForSuggestions(skills, validated.contextData);
+          result = {
+            suggestions,
+            contextAnalysis: {
+              url: validated.contextData.currentUrl,
+              elements: validated.contextData.uniqueElements?.length || 0
+            },
+            recommendedSkills: suggestions.map((s: any) => s.skillName)
+          };
+        }
+        break;
+    }
+    
+    // Salvar habilidades atualizadas
+    skills.lastUpdated = new Date().toISOString();
+    await fs.writeFile(skillsPath, JSON.stringify(skills, null, 2));
+    
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: `Ação ${validated.action} executada com sucesso`
+        },
+        {
+          type: 'text' as const,
+          text: JSON.stringify({
+            action: validated.action,
+            result,
+            totalSkills: skills.totalSkills,
+            expertiseLevel: calculateExpertiseLevel(skills),
+            timestamp: new Date().toISOString()
+          }, null, 2)
+        }
+      ]
+    };
+    
+  } catch (error: any) {
+    throw new MCPError(
+      ErrorCode.INTERNAL_ERROR,
+      `Erro no gerenciamento de habilidades: ${error.message}`
+    );
+  }
+}
+
 // Handler para buscar agentes
 export async function handleSearchAgents(params: unknown) {
   const validated = SearchAgentsSchema.parse(params);
@@ -441,5 +606,243 @@ export const agentsTools = [
       },
       required: ['query']
     }
+  },
+  {
+    name: 'agents_manage_skills',
+    description: 'Gerencia habilidades dinâmicas do agente especialista em Ekyte - sistema de aprendizado evolutivo',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        action: {
+          type: 'string',
+          enum: ['discover', 'register', 'list', 'execute', 'evolve', 'analyze_context'],
+          description: 'Ação a ser executada no sistema de habilidades'
+        },
+        skillData: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', description: 'Nome da habilidade' },
+            description: { type: 'string', description: 'Descrição da habilidade' },
+            context: { type: 'string', description: 'Contexto onde foi descoberta' },
+            selectors: { type: 'array', items: { type: 'string' }, description: 'Seletores CSS necessários' },
+            steps: { type: 'array', items: { type: 'string' }, description: 'Passos para executar' },
+            triggers: { type: 'array', items: { type: 'string' }, description: 'Palavras-chave que ativam a habilidade' },
+            difficulty: { type: 'string', enum: ['basic', 'intermediate', 'advanced', 'expert'], description: 'Nível de dificuldade' }
+          },
+          required: ['name', 'description', 'context', 'difficulty'],
+          description: 'Dados da habilidade (para register)'
+        },
+        naturalLanguageQuery: {
+          type: 'string',
+          description: 'Query em linguagem natural para executar habilidade (para execute)'
+        },
+        contextData: {
+          type: 'object',
+          description: 'Dados do contexto atual da página (para discover/analyze_context)'
+        }
+      },
+      required: ['action']
+    }
   }
 ];
+
+// Funções auxiliares para o sistema de habilidades
+async function analyzePageForSkills(contextData: any): Promise<any[]> {
+  const discoveredSkills = [];
+  
+  // Análise de elementos únicos da página
+  if (contextData.uniqueElements) {
+    for (const element of contextData.uniqueElements) {
+      if (isNewSkillWorthy(element)) {
+        discoveredSkills.push({
+          name: `handle_${element.type}_${element.identifier}`,
+          description: `Gerenciar ${element.type} - ${element.description}`,
+          context: contextData.currentUrl,
+          selectors: [element.selector],
+          steps: generateStepsForElement(element),
+          triggers: [element.text, element.identifier],
+          difficulty: assessDifficulty(element),
+          discoveredAt: new Date().toISOString(),
+          confidence: element.confidence || 0.8
+        });
+      }
+    }
+  }
+  
+  return discoveredSkills;
+}
+
+async function registerNewSkill(skills: any, skillData: any) {
+  const skillId = generateSkillId(skillData.name);
+  
+  if (!skills.skills[skillId]) {
+    skills.skills[skillId] = {
+      ...skillData,
+      id: skillId,
+      createdAt: new Date().toISOString(),
+      usageCount: 0,
+      successRate: 0,
+      lastUsed: null,
+      evolution: {
+        version: 1,
+        improvements: []
+      }
+    };
+    
+    skills.totalSkills++;
+    skills.skillsByDifficulty[skillData.difficulty]++;
+    skills.learningHistory.push({
+      action: 'skill_registered',
+      skillId,
+      timestamp: new Date().toISOString(),
+      context: skillData.context
+    });
+    
+    console.log(`✅ Nova habilidade registrada: ${skillData.name}`);
+  }
+}
+
+async function matchSkillFromNaturalLanguage(skills: any, query: string): Promise<any> {
+  const queryLower = query.toLowerCase();
+  const matches = [];
+  
+  for (const [, skill] of Object.entries(skills.skills)) {
+    const skillData = skill as any;
+    let confidence = 0;
+    
+    // Análise de correspondência por triggers
+    if (skillData.triggers) {
+      for (const trigger of skillData.triggers) {
+        if (queryLower.includes(trigger.toLowerCase())) {
+          confidence += 0.3;
+        }
+      }
+    }
+    
+    // Análise de correspondência por descrição
+    if (skillData.description && queryLower.includes(skillData.description.toLowerCase().split(' ')[0])) {
+      confidence += 0.4;
+    }
+    
+    // Análise de correspondência por nome
+    if (queryLower.includes(skillData.name.toLowerCase().replace(/_/g, ' '))) {
+      confidence += 0.5;
+    }
+    
+    if (confidence > 0.5) {
+      matches.push({
+        ...skillData,
+        confidence
+      });
+    }
+  }
+  
+  // Retorna a melhor correspondência
+  return matches.sort((a, b) => b.confidence - a.confidence)[0] || null;
+}
+
+function calculateExpertiseLevel(skills: any): string {
+  const total = skills.totalSkills;
+  const expert = skills.skillsByDifficulty.expert;
+  const advanced = skills.skillsByDifficulty.advanced;
+  
+  if (total >= 50 && expert >= 10) return 'Senior Specialist';
+  if (total >= 30 && expert >= 5) return 'Advanced Specialist';
+  if (total >= 20 && advanced >= 5) return 'Intermediate Specialist';
+  if (total >= 10) return 'Junior Specialist';
+  return 'Learning Specialist';
+}
+
+async function evolveSkills(skills: any): Promise<any[]> {
+  const evolved = [];
+  
+  // Lógica de evolução automática das habilidades
+  for (const [skillId, skill] of Object.entries(skills.skills)) {
+    const skillData = skill as any;
+    
+    // Promover habilidades com alta taxa de sucesso
+    if (skillData.successRate > 0.9 && skillData.usageCount > 10) {
+      if (skillData.difficulty === 'basic') {
+        skillData.difficulty = 'intermediate';
+        skillData.evolution.version++;
+        skillData.evolution.improvements.push({
+          type: 'difficulty_promotion',
+          from: 'basic',
+          to: 'intermediate',
+          timestamp: new Date().toISOString()
+        });
+        evolved.push({
+          skillId,
+          name: skillData.name,
+          promotion: 'basic -> intermediate'
+        });
+      }
+    }
+  }
+  
+  return evolved;
+}
+
+async function analyzeContextForSuggestions(_skills: any, contextData: any): Promise<any[]> {
+  const suggestions = [];
+  
+  // Sugestões baseadas no contexto atual
+  if (contextData.currentUrl?.includes('task')) {
+    suggestions.push({
+      skillName: 'ekyte_manage_task',
+      reason: 'Contexto de tarefa detectado',
+      confidence: 0.9
+    });
+  }
+  
+  if (contextData.notifications?.length > 0) {
+    suggestions.push({
+      skillName: 'ekyte_process_notifications',
+      reason: 'Notificações pendentes detectadas',
+      confidence: 0.8
+    });
+  }
+  
+  return suggestions;
+}
+
+function isNewSkillWorthy(element: any): boolean {
+  // Critérios para determinar se um elemento merece uma nova habilidade
+  const worthyTypes = ['button', 'form', 'modal', 'dropdown', 'table', 'chart'];
+  const worthyActions = ['submit', 'create', 'edit', 'delete', 'export', 'import'];
+  
+  return worthyTypes.some(type => element.type?.includes(type)) ||
+         worthyActions.some(action => element.text?.toLowerCase().includes(action));
+}
+
+function generateStepsForElement(element: any): string[] {
+  const steps = [];
+  
+  if (element.type === 'form') {
+    steps.push('Localizar formulário');
+    steps.push('Preencher campos obrigatórios');
+    steps.push('Validar dados');
+    steps.push('Submeter formulário');
+  } else if (element.type === 'button') {
+    steps.push('Localizar botão');
+    steps.push('Verificar se está habilitado');
+    steps.push('Clicar no botão');
+    steps.push('Aguardar resposta');
+  }
+  
+  return steps.length ? steps : ['Interagir com elemento', 'Verificar resultado'];
+}
+
+function assessDifficulty(element: any): 'basic' | 'intermediate' | 'advanced' | 'expert' {
+  if (element.requiresAuth) return 'advanced';
+  if (element.hasValidation) return 'intermediate';
+  if (element.isComplex) return 'expert';
+  return 'basic';
+}
+
+function generateSkillId(name: string): string {
+  return name.toLowerCase()
+    .replace(/[^a-z0-9]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '');
+}

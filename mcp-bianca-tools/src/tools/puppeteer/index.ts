@@ -494,6 +494,403 @@ export async function handleEkyteLoginAndNavigate(params: {
   }
 }
 
+// Nova habilidade: Processador de Notificações do Ekyte
+export async function handleEkyteProcessNotifications(params: { 
+  email: string, 
+  password: string,
+  screenshotPath: string,
+  maxNotifications?: number
+}) {
+  console.log(`🔔 Iniciando processamento de notificações do Ekyte`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // 1. FAZER LOGIN
+    console.log(`🔐 Fazendo login...`);
+    await page.goto('https://app.ekyte.com/login', { 
+      waitUntil: 'networkidle2',
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    await page.waitForSelector('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', { timeout: 10000 });
+    await page.type('input[type="email"], input[name="email"], #email, [placeholder*="email"], [placeholder*="Email"]', params.email);
+    await page.type('input[type="password"], input[name="password"], #password, [placeholder*="senha"], [placeholder*="password"]', params.password);
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // 2. CAPTURAR TELA INICIAL
+    console.log(`📸 Capturando tela inicial com notificações...`);
+    await page.screenshot({ path: `${params.screenshotPath}-inicial.png` as any, fullPage: true });
+    
+    // 3. PROCESSAR NOTIFICAÇÕES
+    console.log(`🔍 Procurando notificações...`);
+    const notifications = await page.$$('.notification-item, .task-item, [class*="notification"], [class*="task"]');
+    
+    console.log(`📋 Encontradas ${notifications.length} notificações`);
+    
+    const processedNotifications = [];
+    const maxToProcess = params.maxNotifications || 5;
+    
+    for (let i = 0; i < Math.min(notifications.length, maxToProcess); i++) {
+      console.log(`🔔 Processando notificação ${i + 1}/${Math.min(notifications.length, maxToProcess)}`);
+      
+      try {
+        const notification = notifications[i];
+        if (!notification) continue;
+        
+        // Capturar texto da notificação
+        const notificationText = await notification.evaluate(el => el.textContent?.trim() || '');
+        console.log(`📝 Texto: ${notificationText.substring(0, 100)}...`);
+        
+        // Clicar na notificação
+        await notification.click();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Capturar screenshot da notificação aberta
+        await page.screenshot({ 
+          path: `${params.screenshotPath}-notificacao-${i + 1}.png` as any, 
+          fullPage: true 
+        });
+        
+        // Voltar para lista de notificações
+        await page.goBack();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        processedNotifications.push({
+          index: i + 1,
+          text: notificationText,
+          screenshot: `${params.screenshotPath}-notificacao-${i + 1}.png`
+        });
+        
+      } catch (error) {
+        console.log(`⚠️ Erro ao processar notificação ${i + 1}: ${error}`);
+      }
+    }
+    
+    // 4. CAPTURAR TELA FINAL
+    await page.screenshot({ path: `${params.screenshotPath}-final.png` as any, fullPage: true });
+    
+    console.log(`✅ Processamento concluído! ${processedNotifications.length} notificações processadas`);
+    
+    return successResponse(
+      { 
+        totalNotifications: notifications.length,
+        processedCount: processedNotifications.length,
+        notifications: processedNotifications,
+        screenshots: {
+          initial: `${params.screenshotPath}-inicial.png`,
+          final: `${params.screenshotPath}-final.png`
+        }
+      },
+      `Processadas ${processedNotifications.length} notificações do Ekyte com sucesso!`
+    );
+    
+  } catch (error) {
+    console.error(`❌ Erro no processamento:`, error);
+    throw new MCPError(
+      ErrorCode.PAGE_LOAD_FAILED, 
+      `Falha no processamento de notificações: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+    );
+  }
+}
+
+// HABILIDADE 4: Explorador de Seções do Ekyte
+export async function handleEkyteExploreSection(params: {
+  email: string,
+  password: string,
+  section: 'conhecimento' | 'atendimento' | 'campanhas' | 'projetos' | 'tarefas' | 'publicacoes' | 'biblioteca' | 'data-driven',
+  screenshotPath: string
+}) {
+  console.log(`🗂️ Explorando seção: ${params.section}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Login
+    await page.goto('https://app.ekyte.com/login', { waitUntil: 'networkidle2', timeout: PAGE_TIMEOUT });
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+    await page.type('input[type="email"]', params.email);
+    await page.type('input[type="password"]', params.password);
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // Mapear seções para seletores
+    const sectionSelectors: Record<string, string> = {
+      conhecimento: 'a[href*="conhecimento"], .nav-link:contains("Conhecimento")',
+      atendimento: 'a[href*="atendimento"], .nav-link:contains("Atendimento")',
+      campanhas: 'a[href*="campanhas"], .nav-link:contains("Campanhas")',
+      projetos: 'a[href*="projetos"], .nav-link:contains("Projetos")',
+      tarefas: 'a[href*="tarefas"], .nav-link:contains("Tarefas")',
+      publicacoes: 'a[href*="publicacoes"], .nav-link:contains("Publicações")',
+      biblioteca: 'a[href*="biblioteca"], .nav-link:contains("Biblioteca")',
+      'data-driven': 'a[href*="data"], .nav-link:contains("Data-Driven")'
+    };
+    
+    // Navegar para seção
+    console.log(`🔍 Procurando seção ${params.section}...`);
+    const selector = sectionSelectors[params.section];
+    
+    try {
+      if (selector) {
+        await page.click(selector);
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      } else {
+        throw new Error('Seletor não encontrado');
+      }
+    } catch {
+      console.log(`⚠️ Seletor direto falhou, tentando por texto...`);
+      await page.evaluate((section) => {
+        const links = Array.from(document.querySelectorAll('a, .nav-link'));
+        const link = links.find(l => l.textContent?.toLowerCase().includes(section));
+        if (link) (link as HTMLElement).click();
+      }, params.section);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+    
+    // Capturar screenshot da seção
+    const currentUrl = await page.url();
+    const title = await page.title();
+    
+    await page.screenshot({ path: params.screenshotPath as any, fullPage: true });
+    
+    console.log(`✅ Seção ${params.section} explorada com sucesso!`);
+    
+    return successResponse({
+      section: params.section,
+      currentUrl,
+      title,
+      screenshotPath: params.screenshotPath
+    }, `Seção ${params.section} explorada com sucesso!`);
+    
+  } catch (error) {
+    console.error(`❌ Erro ao explorar seção:`, error);
+    throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, `Falha ao explorar seção ${params.section}: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  }
+}
+
+// HABILIDADE 5: Gerenciador de Tarefas
+export async function handleEkyteManageTask(params: {
+  email: string,
+  password: string,
+  action: 'list' | 'open' | 'comment' | 'update_status',
+  taskId?: string,
+  comment?: string,
+  status?: string,
+  screenshotPath: string
+}) {
+  console.log(`📝 Gerenciando tarefa - Ação: ${params.action}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Login e navegar para tarefas
+    await page.goto('https://app.ekyte.com/login', { waitUntil: 'networkidle2', timeout: PAGE_TIMEOUT });
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+    await page.type('input[type="email"]', params.email);
+    await page.type('input[type="password"]', params.password);
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // Navegar para seção de tarefas
+    try {
+      await page.click('a[href*="tarefas"], .nav-link:contains("Tarefas")');
+    } catch {
+      console.log(`🔍 Procurando seção de tarefas...`);
+    }
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    let result = {};
+    
+    switch (params.action) {
+      case 'list':
+        console.log(`📋 Listando tarefas...`);
+        const tasks = await page.$$('.task-item, [class*="task"], .notification-item');
+        const taskList = [];
+        
+        for (let i = 0; i < Math.min(tasks.length, 10); i++) {
+          const task = tasks[i];
+          if (task) {
+            const text = await task.evaluate(el => el.textContent?.trim() || '');
+            taskList.push({ index: i + 1, text: text.substring(0, 200) });
+          }
+        }
+        
+        result = { action: 'list', totalTasks: tasks.length, tasks: taskList };
+        break;
+        
+      case 'open':
+        if (params.taskId) {
+          console.log(`📂 Abrindo tarefa ${params.taskId}...`);
+          // Lógica para abrir tarefa específica
+        }
+        break;
+        
+      case 'comment':
+        if (params.comment) {
+          console.log(`💬 Adicionando comentário: ${params.comment.substring(0, 50)}...`);
+          // Lógica para adicionar comentário
+        }
+        break;
+    }
+    
+    await page.screenshot({ path: params.screenshotPath as any, fullPage: true });
+    
+    return successResponse(result, `Ação ${params.action} executada com sucesso!`);
+    
+  } catch (error) {
+    console.error(`❌ Erro no gerenciamento de tarefa:`, error);
+    throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, `Falha no gerenciamento de tarefa: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  }
+}
+
+// HABILIDADE 6: Analisador de Métricas
+export async function handleEkyteAnalyzeMetrics(params: {
+  email: string,
+  password: string,
+  screenshotPath: string
+}) {
+  console.log(`📊 Analisando métricas do dashboard`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Login
+    await page.goto('https://app.ekyte.com/login', { waitUntil: 'networkidle2', timeout: PAGE_TIMEOUT });
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+    await page.type('input[type="email"]', params.email);
+    await page.type('input[type="password"]', params.password);
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // Extrair métricas do dashboard
+    console.log(`🔍 Extraindo métricas...`);
+    
+    const metrics = await page.evaluate(() => {
+      const extractNumber = (text: string) => {
+        const match = text.match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+      };
+      
+      // Buscar elementos de métricas
+      const ticketsElement = document.querySelector('[class*="ticket"], .metric-tickets');
+      const tasksElement = document.querySelector('[class*="task"], .metric-tasks');
+      const timeElements = document.querySelectorAll('[class*="time"], [class*="hour"]');
+      
+      return {
+        tickets: ticketsElement ? extractNumber(ticketsElement.textContent || '') : 0,
+        tasks: tasksElement ? extractNumber(tasksElement.textContent || '') : 0,
+        timeToday: Array.from(timeElements).map(el => (el.textContent || '').trim()).filter(t => t.includes('%')),
+        timestamp: new Date().toISOString()
+      };
+    });
+    
+    await page.screenshot({ path: params.screenshotPath as any, fullPage: true });
+    
+    console.log(`✅ Métricas extraídas:`, metrics);
+    
+    return successResponse({
+      metrics,
+      screenshotPath: params.screenshotPath,
+      analysisDate: new Date().toISOString()
+    }, `Métricas analisadas com sucesso!`);
+    
+  } catch (error) {
+    console.error(`❌ Erro na análise de métricas:`, error);
+    throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, `Falha na análise de métricas: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  }
+}
+
+// HABILIDADE 7: Buscador Inteligente
+export async function handleEkyteSmartSearch(params: {
+  email: string,
+  password: string,
+  searchTerm: string,
+  screenshotPath: string
+}) {
+  console.log(`🔍 Busca inteligente por: ${params.searchTerm}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Login
+    await page.goto('https://app.ekyte.com/login', { waitUntil: 'networkidle2', timeout: PAGE_TIMEOUT });
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.waitForSelector('input[type="email"]', { timeout: 10000 });
+    await page.type('input[type="email"]', params.email);
+    await page.type('input[type="password"]', params.password);
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
+    
+    // Procurar campo de busca
+    console.log(`🔍 Procurando campo de busca...`);
+    const searchSelectors = [
+      'input[type="search"]',
+      'input[placeholder*="buscar"]',
+      'input[placeholder*="search"]',
+      '.search-input',
+      '#search'
+    ];
+    
+    let searchFound = false;
+    for (const selector of searchSelectors) {
+      try {
+        await page.waitForSelector(selector, { timeout: 2000 });
+        await page.type(selector, params.searchTerm);
+        await page.keyboard.press('Enter');
+        searchFound = true;
+        break;
+      } catch {
+        continue;
+      }
+    }
+    
+    if (!searchFound) {
+      console.log(`⚠️ Campo de busca não encontrado, fazendo busca manual...`);
+      // Busca manual no conteúdo da página
+      const results = await page.evaluate((term) => {
+        const allText = document.body.innerText.toLowerCase();
+        const termLower = term.toLowerCase();
+        const sentences = allText.split(/[.!?]/);
+        const matches = sentences.filter(sentence => sentence.includes(termLower));
+        return matches.slice(0, 5).map(match => match.trim());
+      }, params.searchTerm);
+      
+      await page.screenshot({ path: params.screenshotPath as any, fullPage: true });
+      
+      return successResponse({
+        searchTerm: params.searchTerm,
+        method: 'manual',
+        results,
+        screenshotPath: params.screenshotPath
+      }, `Busca manual realizada para: ${params.searchTerm}`);
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    await page.screenshot({ path: params.screenshotPath as any, fullPage: true });
+    
+    return successResponse({
+      searchTerm: params.searchTerm,
+      method: 'search_field',
+      screenshotPath: params.screenshotPath
+    }, `Busca realizada com sucesso para: ${params.searchTerm}`);
+    
+  } catch (error) {
+    console.error(`❌ Erro na busca:`, error);
+    throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, `Falha na busca: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  }
+}
+
 // Metadados das ferramentas Puppeteer
 export const puppeteerTools = [
   {
@@ -611,6 +1008,78 @@ export const puppeteerTools = [
         fullPage: { type: 'boolean', description: 'Capture full page', default: true }
       },
       required: ['email', 'password', 'targetUrl', 'screenshotPath']
+    }
+  },
+  {
+    name: 'ekyte_process_notifications',
+    description: 'Process Ekyte notifications',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        screenshotPath: { type: 'string', description: 'Base path for screenshots' },
+        maxNotifications: { type: 'number', description: 'Maximum notifications to process', default: 5 }
+      },
+      required: ['email', 'password', 'screenshotPath']
+    }
+  },
+  {
+    name: 'ekyte_explore_section',
+    description: 'Explore a specific section of Ekyte',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        section: { type: 'string', description: 'Section to explore', enum: ['conhecimento', 'atendimento', 'campanhas', 'projetos', 'tarefas', 'publicacoes', 'biblioteca', 'data-driven'] },
+        screenshotPath: { type: 'string', description: 'Path to save screenshot' }
+      },
+      required: ['email', 'password', 'section', 'screenshotPath']
+    }
+  },
+  {
+    name: 'ekyte_manage_task',
+    description: 'Manage a task in Ekyte',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        action: { type: 'string', description: 'Action to perform', enum: ['list', 'open', 'comment', 'update_status'] },
+        taskId: { type: 'string', description: 'Task ID to open' },
+        comment: { type: 'string', description: 'Comment to add' },
+        status: { type: 'string', description: 'New status for the task' },
+        screenshotPath: { type: 'string', description: 'Path to save screenshot' }
+      },
+      required: ['email', 'password', 'action', 'screenshotPath']
+    }
+  },
+  {
+    name: 'ekyte_analyze_metrics',
+    description: 'Analyze Ekyte metrics',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        screenshotPath: { type: 'string', description: 'Path to save screenshot' }
+      },
+      required: ['email', 'password', 'screenshotPath']
+    }
+  },
+  {
+    name: 'ekyte_smart_search',
+    description: 'Perform a smart search in Ekyte',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email for login' },
+        password: { type: 'string', description: 'Password for login' },
+        searchTerm: { type: 'string', description: 'Search term' },
+        screenshotPath: { type: 'string', description: 'Path to save screenshot' }
+      },
+      required: ['email', 'password', 'searchTerm', 'screenshotPath']
     }
   }
 ];

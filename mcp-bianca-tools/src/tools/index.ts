@@ -17,8 +17,17 @@ export {
   handleNavigateAndScreenshot,
   handleEkyteLogin,
   handleEkyteLoginAndNavigate,
+  handleEkyteProcessNotifications,
+  handleEkyteExploreSection,
+  handleEkyteManageTask,
+  handleEkyteAnalyzeMetrics,
+  handleEkyteSmartSearch,
   startBrowserCleanup
 } from './puppeteer/index.js';
+
+export {
+  handleManageSkills
+} from './agents/index.js';
 
 // Browser Tools
 export {
@@ -57,7 +66,12 @@ import {
   handleOpenBrowser,
   handleNavigateAndScreenshot,
   handleEkyteLogin,
-  handleEkyteLoginAndNavigate
+  handleEkyteLoginAndNavigate,
+  handleEkyteProcessNotifications,
+  handleEkyteExploreSection,
+  handleEkyteManageTask,
+  handleEkyteAnalyzeMetrics,
+  handleEkyteSmartSearch
 } from './puppeteer/index.js';
 
 import {
@@ -68,11 +82,12 @@ import {
   handleListAgents,
   handleGetAgentDetails,
   handleAnalyzeAgent,
-  handleSearchAgents
+  handleSearchAgents,
+  handleManageSkills
 } from './agents/index.js';
 
 export const toolHandlers = {
-  // Puppeteer
+  // Puppeteer Básico
   'puppeteer_navigate': handleNavigate,
   'puppeteer_screenshot': handleScreenshot,
   'puppeteer_click': handleClick,
@@ -81,8 +96,15 @@ export const toolHandlers = {
   'puppeteer_new_tab': handleNewTab,
   'open_browser': handleOpenBrowser,
   'puppeteer_navigate_and_screenshot': handleNavigateAndScreenshot,
-  'ekyte_login': handleEkyteLogin,
-  'ekyte_login_and_navigate': handleEkyteLoginAndNavigate,
+  
+  // Habilidades Ekyte
+  'ekyte_login': handleEkyteLogin,                           // HABILIDADE 1: Login
+  'ekyte_login_and_navigate': handleEkyteLoginAndNavigate,   // HABILIDADE 2: Login + Navegação
+  'ekyte_process_notifications': handleEkyteProcessNotifications, // HABILIDADE 3: Processamento de Notificações
+  'ekyte_explore_section': handleEkyteExploreSection,       // HABILIDADE 4: Exploração de Seções
+  'ekyte_manage_task': handleEkyteManageTask,               // HABILIDADE 5: Gerenciamento de Tarefas
+  'ekyte_analyze_metrics': handleEkyteAnalyzeMetrics,       // HABILIDADE 6: Análise de Métricas
+  'ekyte_smart_search': handleEkyteSmartSearch,             // HABILIDADE 7: Busca Inteligente
   
   // Browser
   'browser_open_url': handleOpenUrl,
@@ -91,5 +113,6 @@ export const toolHandlers = {
   'agents_list': handleListAgents,
   'agents_get_details': handleGetAgentDetails,
   'agents_analyze': handleAnalyzeAgent,
-  'agents_search': handleSearchAgents
+  'agents_search': handleSearchAgents,
+  'agents_manage_skills': handleManageSkills                   // NOVA: Gerenciamento de Habilidades Dinâmicas
 } as const;

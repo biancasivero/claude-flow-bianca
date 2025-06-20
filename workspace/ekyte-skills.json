@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-06-20T21:50:03.788Z",
+  "totalSkills": 1,
+  "skillsByDifficulty": {
+    "basic": 0,
+    "intermediate": 1,
+    "advanced": 0,
+    "expert": 0
+  },
+  "skills": {
+    "ekyte_create_campaign": {
+      "name": "ekyte_create_campaign",
+      "description": "Criar uma nova campanha no Ekyte",
+      "context": "https://app.ekyte.com/campaigns/new",
+      "selectors": [
+        "#campaign-name",
+        "#campaign-description",
+        ".submit-campaign"
+      ],
+      "steps": [
+        "Navegar para campanhas",
+        "Clicar em Nova Campanha",
+        "Preencher nome",
+        "Preencher descrição",
+        "Submeter"
+      ],
+      "triggers": [
+        "criar campanha",
+        "nova campanha",
+        "campaign"
+      ],
+      "difficulty": "intermediate",
+      "id": "ekyte_create_campaign",
+      "createdAt": "2025-06-20T21:49:56.869Z",
+      "usageCount": 0,
+      "successRate": 0,
+      "lastUsed": null,
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    }
+  },
+  "learningHistory": [
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_create_campaign",
+      "timestamp": "2025-06-20T21:49:56.869Z",
+      "context": "https://app.ekyte.com/campaigns/new"
+    }
+  ],
+  "contextualMappings": {},
+  "expertiseEvolution": []
+}
