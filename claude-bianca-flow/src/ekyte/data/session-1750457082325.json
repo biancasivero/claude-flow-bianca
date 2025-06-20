@@ -1,0 +1,106 @@
+{
+  "timestamp": "2025-06-20T22:04:42.184Z",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Navegação inicial + Screenshot da página de login",
+      "success": false,
+      "details": {
+        "path": "",
+        "method": "combined_command"
+      }
+    },
+    {
+      "step": 2,
+      "action": "Captura de conteúdo da página de login",
+      "success": false,
+      "details": null,
+      "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_get_content '{}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+    },
+    {
+      "step": 3,
+      "action": "Processo de login",
+      "success": false,
+      "details": null,
+      "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js ekyte_login '{\"email\":\"bianca_sivero@v4company.com\",\"password\":\"Cancela@1\",\"screenshotPath\":\"../ekyte/screenshots/ekyte-login-attempt-1750457082200.png\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+    },
+    {
+      "step": 4,
+      "action": "Navegação + Screenshot da lista de tarefas",
+      "success": false,
+      "details": {
+        "path": "",
+        "method": "combined_navigation_screenshot"
+      }
+    },
+    {
+      "step": 5,
+      "action": "Análise do conteúdo da lista de tarefas",
+      "success": false,
+      "details": null,
+      "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_get_content '{}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+    },
+    {
+      "step": 6,
+      "action": "Tentativa de gerenciamento de tarefas",
+      "success": false,
+      "details": null,
+      "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js ekyte_manage_task '{\"email\":\"bianca_sivero@v4company.com\",\"password\":\"Cancela@1\",\"action\":\"list\",\"screenshotPath\":\"../ekyte/screenshots/ekyte-task-management-1750457082217.png\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+    },
+    {
+      "step": 7,
+      "action": "Tentativas de interação com interface",
+      "success": true,
+      "details": {
+        "interactions": [
+          {
+            "selector": "button",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\"button\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": ".btn",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\".btn\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": "[role=\"button\"]",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\"[role=\\\"button\\\"]\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": "input[type=\"checkbox\"]",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\"input[type=\\\"checkbox\\\"]\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": "select",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\"select\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": ".filter",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\".filter\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          },
+          {
+            "selector": ".sort",
+            "success": false,
+            "error": "Command failed: cd ../mcp-bianca-tools && node run-mcp-tool.js puppeteer_click '{\"selector\":\".sort\"}'\n/bin/sh: line 0: cd: ../mcp-bianca-tools: No such file or directory\n"
+          }
+        ],
+        "totalAttempts": 7
+      }
+    },
+    {
+      "step": 8,
+      "action": "Screenshot final",
+      "success": false,
+      "details": {
+        "path": ""
+      }
+    }
+  ],
+  "screenshots": [],
+  "learnings": []
+}
