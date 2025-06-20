@@ -12,6 +12,7 @@ export {
   handleClick,
   handleType,
   handleGetContent,
+  handleNewTab,
   handleOpenBrowser,
   startBrowserCleanup
 } from './puppeteer/index.js';
@@ -49,6 +50,7 @@ import {
   handleClick,
   handleType,
   handleGetContent,
+  handleNewTab,
   handleOpenBrowser
 } from './puppeteer/index.js';
 
@@ -70,6 +72,7 @@ export const toolHandlers = {
   'puppeteer_click': handleClick,
   'puppeteer_type': handleType,
   'puppeteer_get_content': handleGetContent,
+  'puppeteer_new_tab': handleNewTab,
   'open_browser': handleOpenBrowser,
   
   // Browser

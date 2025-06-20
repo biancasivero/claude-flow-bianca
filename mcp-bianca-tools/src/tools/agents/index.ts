@@ -84,7 +84,7 @@ export async function handleListAgents(params: unknown) {
   const validated = ListAgentsSchema.parse(params);
   
   try {
-    const agentsPath = validated.path;
+    const agentsPath = validated.path.startsWith('/') ? validated.path : DEFAULT_AGENTS_PATH;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
@@ -297,7 +297,7 @@ export async function handleSearchAgents(params: unknown) {
   const validated = SearchAgentsSchema.parse(params);
   
   try {
-    const agentsPath = validated.path;
+    const agentsPath = validated.path.startsWith('/') ? validated.path : DEFAULT_AGENTS_PATH;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
