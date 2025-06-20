@@ -18,8 +18,8 @@ export class Orchestrator extends EventEmitter {
 
   constructor() {
     super();
-    this.memoryPath = '/workspace/memory';
-    this.coordinationPath = '/workspace/coordination';
+    this.memoryPath = path.join(process.cwd(), 'workspace', 'memory');
+    this.coordinationPath = path.join(process.cwd(), 'workspace', 'coordination');
     this.port = 3003;
   }
 
