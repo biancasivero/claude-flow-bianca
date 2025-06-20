@@ -10,7 +10,7 @@ import * as path from 'path';
 import { MCPError, ErrorCode } from '../../types.js';
 
 // Path padrão para os agentes
-const DEFAULT_AGENTS_PATH = '../claude-bianca-flow/src/agents';
+const DEFAULT_AGENTS_PATH = '/Users/phiz/Desktop/claude-flow-bianca/claude-bianca-flow/src/agents';
 
 // Schemas de validação
 export const ListAgentsSchema = z.object({
@@ -84,7 +84,7 @@ export async function handleListAgents(params: unknown) {
   const validated = ListAgentsSchema.parse(params);
   
   try {
-    const agentsPath = path.resolve(process.cwd(), validated.path);
+    const agentsPath = validated.path;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
@@ -147,7 +147,7 @@ export async function handleGetAgentDetails(params: unknown) {
   const validated = GetAgentDetailsSchema.parse(params);
   
   try {
-    const agentsPath = path.resolve(process.cwd(), DEFAULT_AGENTS_PATH);
+    const agentsPath = DEFAULT_AGENTS_PATH;
     const filePath = path.join(agentsPath, validated.agentFile);
     
     // Verificar se arquivo existe
@@ -205,7 +205,7 @@ export async function handleAnalyzeAgent(params: unknown) {
   const validated = AnalyzeAgentSchema.parse(params);
   
   try {
-    const agentsPath = path.resolve(process.cwd(), DEFAULT_AGENTS_PATH);
+    const agentsPath = DEFAULT_AGENTS_PATH;
     const filePath = path.join(agentsPath, validated.agentFile);
     
     const agents = await parseAgentsFile(filePath);
@@ -297,7 +297,7 @@ export async function handleSearchAgents(params: unknown) {
   const validated = SearchAgentsSchema.parse(params);
   
   try {
-    const agentsPath = path.resolve(process.cwd(), validated.path);
+    const agentsPath = validated.path;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
