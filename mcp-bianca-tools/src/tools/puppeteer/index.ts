@@ -175,22 +175,36 @@ export async function handleNavigate(params: NavigateParams) {
 export async function handleScreenshot(params: ScreenshotParams) {
   const validated = ScreenshotSchema.parse(params);
   
+  console.log(`📸 Iniciando captura de screenshot: ${validated.path}`);
+  
   await ensureBrowser();
   if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  // Debug: verificar URL atual
+  const currentUrl = await page.url();
+  console.log(`🌐 URL atual da página: ${currentUrl}`);
+  
+  // Debug: verificar se página está carregada
+  const title = await page.title();
+  console.log(`📄 Título da página: ${title}`);
   
   let path = validated.path;
   if (!path.match(/\.(png|jpg|jpeg)$/i)) {
     path += '.png';
   }
   
+  console.log(`💾 Salvando screenshot em: ${path}`);
+  
   await page.screenshot({
     path: path as any, // Type assertion para resolver conflito de tipos
     fullPage: validated.fullPage
   });
   
+  console.log(`✅ Screenshot salvo com sucesso!`);
+  
   return successResponse(
-    { path },
-    `Screenshot salvo em ${path}`
+    { path, currentUrl, title },
+    `Screenshot salvo em ${path} (URL: ${currentUrl})`
   );
 }
 
@@ -275,6 +289,57 @@ export async function handleOpenBrowser(params: { url: string }) {
   }
 }
 
+// Nova função que combina navegação + screenshot
+export async function handleNavigateAndScreenshot(params: { url: string, path: string, fullPage?: boolean }) {
+  console.log(`🚀 Iniciando navegação + screenshot para: ${params.url}`);
+  
+  await ensureBrowser();
+  if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
+  
+  try {
+    // Navegar
+    console.log(`🌐 Navegando para: ${params.url}`);
+    await page.goto(params.url, { 
+      waitUntil: 'domcontentloaded',
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    console.log(`✅ Navegação concluída`);
+    
+    // Aguardar carregamento
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Verificar se página carregou
+    const title = await page.title();
+    console.log(`📄 Página carregada: ${title}`);
+    
+    // Capturar screenshot
+    let path = params.path;
+    if (!path.match(/\.(png|jpg|jpeg)$/i)) {
+      path += '.png';
+    }
+    
+    console.log(`📸 Capturando screenshot...`);
+    await page.screenshot({
+      path: path as any,
+      fullPage: params.fullPage || false
+    });
+    
+    console.log(`✅ Screenshot capturado com sucesso!`);
+    
+    return successResponse(
+      { url: params.url, path, title },
+      `Navegado para ${params.url} e screenshot salvo em ${path}`
+    );
+  } catch (error) {
+    console.error(`❌ Erro na operação:`, error);
+    throw new MCPError(
+      ErrorCode.PAGE_LOAD_FAILED, 
+      `Falha na operação: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+    );
+  }
+}
+
 // Metadados das ferramentas Puppeteer
 export const puppeteerTools = [
   {
@@ -351,6 +416,19 @@ export const puppeteerTools = [
         url: { type: 'string', description: 'URL to open in default browser' }
       },
       required: ['url']
+    }
+  },
+  {
+    name: 'puppeteer_navigate_and_screenshot',
+    description: 'Navigate to URL and take screenshot in single operation',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        url: { type: 'string', description: 'URL to navigate to' },
+        path: { type: 'string', description: 'Path to save the screenshot' },
+        fullPage: { type: 'boolean', description: 'Capture full page', default: false }
+      },
+      required: ['url', 'path']
     }
   }
 ];

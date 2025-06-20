@@ -14,6 +14,7 @@ export {
   handleGetContent,
   handleNewTab,
   handleOpenBrowser,
+  handleNavigateAndScreenshot,
   startBrowserCleanup
 } from './puppeteer/index.js';
 
@@ -51,7 +52,8 @@ import {
   handleType,
   handleGetContent,
   handleNewTab,
-  handleOpenBrowser
+  handleOpenBrowser,
+  handleNavigateAndScreenshot
 } from './puppeteer/index.js';
 
 import {
@@ -74,6 +76,7 @@ export const toolHandlers = {
   'puppeteer_get_content': handleGetContent,
   'puppeteer_new_tab': handleNewTab,
   'open_browser': handleOpenBrowser,
+  'puppeteer_navigate_and_screenshot': handleNavigateAndScreenshot,
   
   // Browser
   'browser_open_url': handleOpenUrl,
