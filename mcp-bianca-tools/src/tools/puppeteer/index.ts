@@ -51,22 +51,35 @@ let page: Page | null = null;
 let lastActivity = Date.now();
 
 // Configurações
-const BROWSER_TIMEOUT = 5 * 60 * 1000; // 5 minutos
+const BROWSER_TIMEOUT = 30 * 60 * 1000; // 30 minutos (aumentado de 5)
 const DEFAULT_VIEWPORT = { width: 1280, height: 720 };
+const PAGE_TIMEOUT = 30000; // 30 segundos para carregamento de página
 
-// Configurações do browser - simplificadas como no reference server
+// Configurações do browser - melhoradas para persistência
 const BROWSER_CONFIG = {
-  headless: false
+  headless: false,
+  defaultViewport: DEFAULT_VIEWPORT,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-accelerated-2d-canvas',
+    '--no-first-run',
+    '--no-zygote',
+    '--disable-gpu'
+  ]
 };
 
 /**
  * Garante que o browser está inicializado
  */
 async function ensureBrowser(): Promise<void> {
+  console.log(`🔍 Verificando estado do browser... (browser: ${!!browser}, connected: ${browser?.isConnected()}, page: ${!!page}, closed: ${page?.isClosed()})`);
+  
   if (!browser || !browser.isConnected()) {
     console.log('🚀 Iniciando novo browser Puppeteer...');
     
-    // Usa configuração simples como no reference server
+    // Usa configuração melhorada
     browser = await puppeteer.launch(BROWSER_CONFIG);
     
     // Adiciona listener para fechar gracefully
@@ -75,15 +88,38 @@ async function ensureBrowser(): Promise<void> {
       browser = null;
       page = null;
     });
+    
+    console.log('✅ Browser iniciado com sucesso');
+  } else {
+    console.log('♻️ Reutilizando browser existente');
   }
   
   if (!page || page.isClosed()) {
     console.log('📄 Criando nova página...');
     const pages = await browser.pages();
-    page = pages[0] || await browser.newPage();
+    
+    if (pages.length > 0) {
+      page = pages[0] || null;
+      console.log('📄 Reutilizando página existente');
+    } else {
+      page = await browser.newPage();
+      console.log('📄 Nova página criada');
+    }
+    
+    // Configurar viewport e timeouts apenas se page não for null
+    if (page) {
+      await page.setViewport(DEFAULT_VIEWPORT);
+      page.setDefaultTimeout(PAGE_TIMEOUT);
+      page.setDefaultNavigationTimeout(PAGE_TIMEOUT);
+      
+      console.log('⚙️ Página configurada com viewport e timeouts');
+    }
+  } else {
+    console.log('♻️ Reutilizando página existente');
   }
   
   lastActivity = Date.now();
+  console.log(`⏰ Última atividade atualizada: ${new Date(lastActivity).toLocaleTimeString()}`);
 }
 
 /**
@@ -104,15 +140,36 @@ export function startBrowserCleanup() {
 export async function handleNavigate(params: NavigateParams) {
   const validated = NavigateSchema.parse(params);
   
+  console.log(`🌐 Navegando para: ${validated.url}`);
+  
   await ensureBrowser();
   if (!page) throw new MCPError(ErrorCode.PAGE_LOAD_FAILED, 'Página não inicializada');
   
-  await page.goto(validated.url, { waitUntil: 'networkidle2' });
-  
-  return successResponse(
-    { url: validated.url },
-    `Navegado para ${validated.url}`
-  );
+  try {
+    // Navegar com timeout mais longo e aguardar carregamento completo
+    await page.goto(validated.url, { 
+      waitUntil: 'domcontentloaded', // Mudança: mais rápido que networkidle2
+      timeout: PAGE_TIMEOUT 
+    });
+    
+    console.log(`✅ Navegação concluída para: ${validated.url}`);
+    
+    // Aguardar um pouco mais para JavaScript carregar
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    console.log(`🎯 Página carregada e pronta para interação`);
+    
+    return successResponse(
+      { url: validated.url },
+      `Navegado para ${validated.url}`
+    );
+  } catch (error) {
+    console.error(`❌ Erro na navegação:`, error);
+    throw new MCPError(
+      ErrorCode.PAGE_LOAD_FAILED, 
+      `Falha ao navegar para ${validated.url}: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+    );
+  }
 }
 
 export async function handleScreenshot(params: ScreenshotParams) {
