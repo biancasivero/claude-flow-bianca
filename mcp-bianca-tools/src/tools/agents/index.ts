@@ -14,7 +14,7 @@ const DEFAULT_AGENTS_PATH = '/Users/phiz/Desktop/claude-flow-bianca/claude-bianc
 
 // Schemas de validação
 export const ListAgentsSchema = z.object({
-  path: z.string().optional().default(DEFAULT_AGENTS_PATH),
+  path: z.string().default(DEFAULT_AGENTS_PATH),
   filter: z.object({
     type: z.enum(['researcher', 'implementer', 'analyst', 'coordinator', 'custom']).optional(),
     name: z.string().optional(),
@@ -34,7 +34,7 @@ export const AnalyzeAgentSchema = z.object({
 
 export const SearchAgentsSchema = z.object({
   query: z.string().min(1, 'Query de busca é obrigatória'),
-  path: z.string().optional().default(DEFAULT_AGENTS_PATH)
+  path: z.string().default(DEFAULT_AGENTS_PATH)
 });
 
 // Tipos
@@ -84,7 +84,7 @@ export async function handleListAgents(params: unknown) {
   const validated = ListAgentsSchema.parse(params);
   
   try {
-    const agentsPath = validated.path.startsWith('/') ? validated.path : DEFAULT_AGENTS_PATH;
+    const agentsPath = validated.path;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
@@ -297,7 +297,7 @@ export async function handleSearchAgents(params: unknown) {
   const validated = SearchAgentsSchema.parse(params);
   
   try {
-    const agentsPath = validated.path.startsWith('/') ? validated.path : DEFAULT_AGENTS_PATH;
+    const agentsPath = validated.path;
     const files = await fs.readdir(agentsPath);
     const agentFiles = files.filter(f => f.endsWith('.ts') && (f.includes('agent') || f.includes('guardian')));
     
