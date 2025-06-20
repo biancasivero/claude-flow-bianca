@@ -55,14 +55,7 @@ class EkyteSimpleTest {
       const paramsStr = Object.keys(params).length > 0 ? JSON.stringify(params) : '{}';
       const command = `cd ../mcp-bianca-tools && node run-mcp-tool.js ${tool} '${paramsStr}'`;
       const result = execSync(command, { encoding: 'utf8', timeout: 30000 });
-      const parsed = JSON.parse(result);
-      
-      // Debug logging para entender a estrutura do resultado
-      if (tool === 'puppeteer_get_content') {
-        console.log(`[DEBUG] Content result:`, JSON.stringify(parsed, null, 2));
-      }
-      
-      return parsed;
+      return JSON.parse(result);
     } catch (error) {
       console.error(`Erro ao executar ${tool}:`, error);
       throw error;
@@ -94,8 +87,7 @@ class EkyteSimpleTest {
     const startTime = Date.now();
     while (Date.now() - startTime < timeout) {
       try {
-        const result = this.executeMCPTool('puppeteer_get_content');
-        const content = result.data?.content || result.content || '';
+        const content = this.executeMCPTool('puppeteer_get_content');
         if (content.includes(selector) || content.includes('id="' + selector.replace('#', '') + '"') || 
             content.includes('class="' + selector.replace('.', '') + '"')) {
           return true;
@@ -118,8 +110,7 @@ class EkyteSimpleTest {
         url: 'https://app.ekyte.com/' 
       });
       this.addStep(1, 'Navegação inicial para eKyte', true);
-      console.log('⏳ Aguardando carregamento da página...');
-      await new Promise(resolve => setTimeout(resolve, 8000)); // Aguardar mais tempo para carregamento
+      await new Promise(resolve => setTimeout(resolve, 3000)); // Aguardar carregamento
     } catch (error) {
       this.addStep(1, 'Navegação inicial para eKyte', false, null, error.message);
       return;
@@ -132,14 +123,13 @@ class EkyteSimpleTest {
     // Passo 3: Analisar conteúdo da página de login
     let loginPageContent = '';
     try {
-      const result = this.executeMCPTool('puppeteer_get_content');
-      const content = result.data?.content || result.content || '';
+      const content = this.executeMCPTool('puppeteer_get_content');
       loginPageContent = content;
       this.addStep(3, 'Captura de conteúdo da página de login', true, { 
         contentLength: content.length,
         hasLoginForm: content.includes('login') || content.includes('email') || content.includes('password')
       });
-    } catch (error: any) {
+    } catch (error) {
       this.addStep(3, 'Captura de conteúdo da página de login', false, null, error.message);
     }
 
@@ -274,8 +264,7 @@ class EkyteSimpleTest {
       const tasksUrl = 'https://app.ekyte.com/#/tasks/list?actualSelectSort=10&executorId=60f5aa2f-a7f4-4408-855e-b0936950cc37&limited=1&situation=10&textKey=100&groupBy=800';
       await this.executeMCPTool('puppeteer_navigate', { url: tasksUrl });
       this.addStep(6, 'Navegação para lista de tarefas', true);
-      console.log('⏳ Aguardando carregamento da lista de tarefas...');
-      await new Promise(resolve => setTimeout(resolve, 8000)); // Aguardar mais tempo
+      await new Promise(resolve => setTimeout(resolve, 3000));
     } catch (error) {
       this.addStep(6, 'Navegação para lista de tarefas', false, null, error.message);
     }
@@ -286,8 +275,7 @@ class EkyteSimpleTest {
 
     // Passo 8: Analisar conteúdo da lista de tarefas
     try {
-      const result = this.executeMCPTool('puppeteer_get_content');
-      const content = result.data?.content || result.content || '';
+      const content = this.executeMCPTool('puppeteer_get_content');
       const analysis = this.analyzeTasksContent(content);
       this.addStep(8, 'Análise do conteúdo da lista de tarefas', true, analysis);
       
@@ -301,7 +289,7 @@ class EkyteSimpleTest {
       if (analysis.hasTable) {
         this.session.learnings.push('Tarefas são exibidas em formato de tabela');
       }
-    } catch (error: any) {
+    } catch (error) {
       this.addStep(8, 'Análise do conteúdo da lista de tarefas', false, null, error.message);
     }
 
