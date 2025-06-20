@@ -148,14 +148,14 @@ export async function handleNavigate(params: NavigateParams) {
   try {
     // Navegar com timeout mais longo e aguardar carregamento completo
     await page.goto(validated.url, { 
-      waitUntil: 'domcontentloaded', // Mudança: mais rápido que networkidle2
+      waitUntil: 'networkidle2', // Aguarda até não haver requisições por 500ms
       timeout: PAGE_TIMEOUT 
     });
     
     console.log(`✅ Navegação concluída para: ${validated.url}`);
     
-    // Aguardar um pouco mais para JavaScript carregar
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Aguardar mais tempo para JavaScript carregar completamente
+    await new Promise(resolve => setTimeout(resolve, 5000));
     
     console.log(`🎯 Página carregada e pronta para interação`);
     
