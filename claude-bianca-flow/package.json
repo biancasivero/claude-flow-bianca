@@ -1,0 +1,30 @@
+{
+  "name": "claude-bianca-flow-bianca",
+  "version": "1.0.0",
+  "description": "Claude Flow Bianca - Auto-commit and organization tools",
+  "scripts": {
+    "auto-commit-docker": "node src/agents/auto-commit-docker.ts",
+    "auto-commit": "tsx src/agents/auto-commit.ts",
+    "dev": "tsx src/cli.ts",
+    "organize": "./scripts/organize-project.sh",
+    "organize:universal": "tsx src/organization/universal-organization-guardian.ts"
+  },
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "@types/express": "^4.17.21",
+    "axios": "^1.9.0",
+    "chalk": "^5.3.0",
+    "chokidar": "^4.0.3",
+    "chromadb": "^3.0.3",
+    "commander": "^14.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

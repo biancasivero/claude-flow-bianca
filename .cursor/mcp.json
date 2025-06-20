@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "bianca-tools": {
+      "command": "node",
+      "args": ["/Users/phiz/Desktop/claude-flow-bianca/mcp-bianca-tools/build/index.js"],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+} 
