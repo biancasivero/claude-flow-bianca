@@ -10,6 +10,16 @@
       "createdAt": "2025-06-20T20:24:55.723Z",
       "updatedAt": "2025-06-20T20:24:56.286Z",
       "assignedAgent": "improvement"
+    },
+    {
+      "id": "task-1750451335209-id66w3ere",
+      "type": "improvement",
+      "description": "\nAdicione as seguintes ferramentas GitHub ao arquivo mcp-bianca-tools/src/tools/github/index.ts:\n\n1. search_repositories - Buscar repositórios\n2. get_file_contents - Obter conteúdo de arquivos\n3. fork_repository - Fazer fork de repositórios  \n4. create_branch - Criar branches\n5. merge_pull_request - Fazer merge de pull requests\n\nRequisitos:\n- Mantenha o padrão TypeScript existente com schemas Zod\n- Adicione os tipos necessários\n- Implemente handlers com tratamento de erro apropriado\n- Atualize as exportações\n- Siga o mesmo padrão das ferramentas existentes\n\nIMPORTANTE: Execute as mudanças de forma incremental e teste cada adição.\n",
+      "priority": "high",
+      "status": "completed",
+      "createdAt": "2025-06-20T20:28:55.209Z",
+      "updatedAt": "2025-06-20T20:28:55.677Z",
+      "assignedAgent": "improvement"
     }
   ],
   "executionHistory": [
@@ -25,7 +35,20 @@
         "assignedAgent": "improvement"
       },
       "duration": 563
+    },
+    {
+      "task": {
+        "id": "task-1750451335209-id66w3ere",
+        "type": "improvement",
+        "description": "\nAdicione as seguintes ferramentas GitHub ao arquivo mcp-bianca-tools/src/tools/github/index.ts:\n\n1. search_repositories - Buscar repositórios\n2. get_file_contents - Obter conteúdo de arquivos\n3. fork_repository - Fazer fork de repositórios  \n4. create_branch - Criar branches\n5. merge_pull_request - Fazer merge de pull requests\n\nRequisitos:\n- Mantenha o padrão TypeScript existente com schemas Zod\n- Adicione os tipos necessários\n- Implemente handlers com tratamento de erro apropriado\n- Atualize as exportações\n- Siga o mesmo padrão das ferramentas existentes\n\nIMPORTANTE: Execute as mudanças de forma incremental e teste cada adição.\n",
+        "priority": "high",
+        "status": "completed",
+        "createdAt": "2025-06-20T20:28:55.209Z",
+        "updatedAt": "2025-06-20T20:28:55.677Z",
+        "assignedAgent": "improvement"
+      },
+      "duration": 467
     }
   ],
-  "lastSaved": "2025-06-20T20:24:56.287Z"
+  "lastSaved": "2025-06-20T20:28:55.677Z"
 }
