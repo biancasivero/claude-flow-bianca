@@ -384,6 +384,10 @@ export async function handleEkyteLogin(params: { email: string, password: string
     console.log(`⏳ Aguardando redirecionamento...`);
     await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
     
+    // Aguardar carregamento completo da página após login
+    console.log(`⏳ Aguardando carregamento completo da página...`);
+    await new Promise(resolve => setTimeout(resolve, 8000)); // Aguardar 8 segundos
+    
     // Verificar se login foi bem-sucedido
     const currentUrl = await page.url();
     const title = await page.title();
