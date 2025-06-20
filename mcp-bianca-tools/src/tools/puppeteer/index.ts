@@ -378,7 +378,7 @@ export async function handleEkyteLogin(params: { email: string, password: string
     
     // Clicar no botão de login
     console.log(`🚀 Clicando no botão de login...`);
-    await page.click('button[type="submit"], .btn-login, #login-btn, [class*="login"], [class*="entrar"]');
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
     
     // Aguardar redirecionamento
     console.log(`⏳ Aguardando redirecionamento...`);
@@ -445,7 +445,7 @@ export async function handleEkyteLoginAndNavigate(params: {
     await page.type('input[type="password"], input[name="password"], #password, [placeholder*="senha"], [placeholder*="password"]', params.password);
     
     console.log(`🚀 Clicando em login...`);
-    await page.click('button[type="submit"], .btn-login, #login-btn, [class*="login"], [class*="entrar"]');
+    await page.click('button[type="submit"].btn.btn-primary.btn-md');
     
     console.log(`⏳ Aguardando redirecionamento após login...`);
     await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 15000 });
