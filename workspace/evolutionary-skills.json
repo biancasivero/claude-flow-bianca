@@ -1,0 +1,1574 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2025-06-20T22:18:24.492Z",
+  "totalSkills": 30,
+  "skillsByDifficulty": {
+    "basic": 5,
+    "intermediate": 10,
+    "advanced": 8,
+    "expert": 7
+  },
+  "skills": {
+    "ekyte_create_campaign": {
+      "id": "ekyte_create_campaign",
+      "name": "ekyte_create_campaign",
+      "description": "Criar uma nova campanha no sistema Ekyte",
+      "context": "https://ekyte.com/campaigns",
+      "selectors": [
+        "button[data-action=create]"
+      ],
+      "steps": [
+        "Navegar para campanhas",
+        "Clicar em criar",
+        "Preencher formulário",
+        "Salvar"
+      ],
+      "triggers": [
+        "criar campanha",
+        "nova campanha"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:08:56.711Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "campaigns",
+        "ekyte-platform",
+        "creation"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_login": {
+      "id": "ekyte_login",
+      "name": "ekyte_login",
+      "description": "Fazer login no sistema Ekyte com credenciais",
+      "context": "https://ekyte.com/login",
+      "selectors": [
+        "input[name=email]",
+        "input[name=password]",
+        "button[type=submit]"
+      ],
+      "steps": [
+        "Navegar para página de login",
+        "Inserir email",
+        "Inserir senha",
+        "Clicar em fazer login",
+        "Aguardar redirecionamento"
+      ],
+      "triggers": [
+        "fazer login",
+        "entrar",
+        "login ekyte",
+        "autenticar"
+      ],
+      "difficulty": "basic",
+      "createdAt": "2025-06-20T22:11:55.481Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_manage_tasks": {
+      "id": "ekyte_manage_tasks",
+      "name": "ekyte_manage_tasks",
+      "description": "Gerenciar tarefas no sistema Ekyte - criar, editar e acompanhar",
+      "context": "https://ekyte.com/tasks",
+      "selectors": [
+        ".task-list",
+        "button.create-task",
+        ".task-item"
+      ],
+      "steps": [
+        "Navegar para seção de tarefas",
+        "Visualizar lista de tarefas",
+        "Criar nova tarefa se necessário",
+        "Editar tarefa existente",
+        "Marcar como concluída"
+      ],
+      "triggers": [
+        "gerenciar tarefas",
+        "tarefas",
+        "criar tarefa",
+        "editar tarefa"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:12:03.759Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "task-management",
+        "ekyte-platform",
+        "creation",
+        "editing"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_analyze_metrics": {
+      "id": "ekyte_analyze_metrics",
+      "name": "ekyte_analyze_metrics",
+      "description": "Analisar métricas e dashboards do sistema Ekyte para insights",
+      "context": "https://ekyte.com/dashboard",
+      "selectors": [
+        ".metrics-container",
+        ".chart-widget",
+        ".kpi-card"
+      ],
+      "steps": [
+        "Navegar para dashboard",
+        "Carregar métricas atuais",
+        "Analisar tendências",
+        "Identificar insights",
+        "Gerar relatório"
+      ],
+      "triggers": [
+        "analisar métricas",
+        "dashboard",
+        "relatórios",
+        "insights",
+        "kpis"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:12:11.319Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_automate_workflow": {
+      "id": "ekyte_automate_workflow",
+      "name": "ekyte_automate_workflow",
+      "description": "Automatizar workflow completo no Ekyte - desde criação até entrega",
+      "context": "https://ekyte.com/automation",
+      "selectors": [
+        ".workflow-builder",
+        ".automation-rules",
+        ".trigger-config"
+      ],
+      "steps": [
+        "Analisar requisitos do workflow",
+        "Configurar triggers automáticos",
+        "Definir regras de negócio",
+        "Implementar automação",
+        "Monitorar execução",
+        "Otimizar performance"
+      ],
+      "triggers": [
+        "automatizar",
+        "workflow",
+        "automação",
+        "processo completo"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:12:19.405Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_process_notifications": {
+      "id": "ekyte_process_notifications",
+      "name": "ekyte_process_notifications",
+      "description": "Processar e gerenciar notificações do sistema Ekyte",
+      "context": "https://ekyte.com/notifications",
+      "selectors": [
+        ".notification-item",
+        ".mark-read",
+        ".notification-filter"
+      ],
+      "steps": [
+        "Acessar centro de notificações",
+        "Filtrar por tipo/prioridade",
+        "Ler notificações pendentes",
+        "Marcar como lidas",
+        "Responder se necessário"
+      ],
+      "triggers": [
+        "notificações",
+        "processar notificações",
+        "centro de notificações"
+      ],
+      "difficulty": "basic",
+      "createdAt": "2025-06-20T22:13:55.189Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_manage_clients": {
+      "id": "ekyte_manage_clients",
+      "name": "ekyte_manage_clients",
+      "description": "Gerenciar clientes e contatos no sistema Ekyte",
+      "context": "https://ekyte.com/clients",
+      "selectors": [
+        ".client-list",
+        ".add-client",
+        ".client-profile"
+      ],
+      "steps": [
+        "Acessar módulo de clientes",
+        "Visualizar lista de clientes",
+        "Adicionar novo cliente",
+        "Editar informações do cliente",
+        "Gerenciar histórico de interações"
+      ],
+      "triggers": [
+        "clientes",
+        "gerenciar clientes",
+        "adicionar cliente",
+        "contatos"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:14:02.960Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_export_data": {
+      "id": "ekyte_export_data",
+      "name": "ekyte_export_data",
+      "description": "Exportar dados e relatórios do sistema Ekyte em diversos formatos",
+      "context": "https://ekyte.com/export",
+      "selectors": [
+        ".export-options",
+        ".format-selector",
+        ".download-btn"
+      ],
+      "steps": [
+        "Acessar módulo de exportação",
+        "Selecionar tipo de dados",
+        "Escolher formato (CSV, PDF, Excel)",
+        "Configurar filtros",
+        "Gerar e baixar arquivo"
+      ],
+      "triggers": [
+        "exportar",
+        "export",
+        "relatórios",
+        "download dados"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:14:10.653Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "forms"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_configure_integrations": {
+      "id": "ekyte_configure_integrations",
+      "name": "ekyte_configure_integrations",
+      "description": "Configurar integrações com sistemas externos no Ekyte",
+      "context": "https://ekyte.com/integrations",
+      "selectors": [
+        ".integration-list",
+        ".api-settings",
+        ".webhook-config"
+      ],
+      "steps": [
+        "Acessar painel de integrações",
+        "Selecionar sistema externo",
+        "Configurar API keys",
+        "Definir webhooks",
+        "Testar conexão",
+        "Ativar integração"
+      ],
+      "triggers": [
+        "integrações",
+        "configurar integração",
+        "api",
+        "webhooks"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:14:17.630Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_manage_permissions": {
+      "id": "ekyte_manage_permissions",
+      "name": "ekyte_manage_permissions",
+      "description": "Gerenciar permissões e controle de acesso no sistema Ekyte",
+      "context": "https://ekyte.com/admin/permissions",
+      "selectors": [
+        ".user-roles",
+        ".permission-matrix",
+        ".access-control"
+      ],
+      "steps": [
+        "Acessar painel de administração",
+        "Visualizar usuários e grupos",
+        "Definir roles e permissões",
+        "Configurar níveis de acesso",
+        "Aplicar políticas de segurança"
+      ],
+      "triggers": [
+        "permissões",
+        "controle de acesso",
+        "roles",
+        "segurança"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:14:55.745Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_ai_optimization": {
+      "id": "ekyte_ai_optimization",
+      "name": "ekyte_ai_optimization",
+      "description": "Otimizar sistema usando IA para performance e automação inteligente",
+      "context": "https://ekyte.com/ai-optimization",
+      "selectors": [
+        ".ai-dashboard",
+        ".optimization-engine",
+        ".ml-models"
+      ],
+      "steps": [
+        "Acessar painel de IA",
+        "Analisar padrões de uso",
+        "Configurar modelos de ML",
+        "Implementar otimizações automáticas",
+        "Monitorar performance de IA"
+      ],
+      "triggers": [
+        "otimização ia",
+        "inteligência artificial",
+        "machine learning",
+        "ai optimization"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:15:05.802Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "forms"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_backup_restore": {
+      "id": "ekyte_backup_restore",
+      "name": "ekyte_backup_restore",
+      "description": "Realizar backup e restauração de dados do sistema Ekyte",
+      "context": "https://ekyte.com/backup",
+      "selectors": [
+        ".backup-scheduler",
+        ".restore-options",
+        ".data-integrity"
+      ],
+      "steps": [
+        "Acessar módulo de backup",
+        "Configurar agendamento automático",
+        "Executar backup manual",
+        "Verificar integridade",
+        "Restaurar dados quando necessário"
+      ],
+      "triggers": [
+        "backup",
+        "restaurar",
+        "backup dados",
+        "restore"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:15:14.736Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_custom_fields": {
+      "id": "ekyte_custom_fields",
+      "name": "ekyte_custom_fields",
+      "description": "Criar e gerenciar campos customizados no sistema Ekyte",
+      "context": "https://ekyte.com/custom-fields",
+      "selectors": [
+        ".field-builder",
+        ".field-types",
+        ".validation-rules"
+      ],
+      "steps": [
+        "Acessar construtor de campos",
+        "Definir tipo de campo",
+        "Configurar validações",
+        "Aplicar a formulários",
+        "Testar funcionalidade"
+      ],
+      "triggers": [
+        "campos customizados",
+        "custom fields",
+        "personalizar campos"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:15:22.960Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "creation"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_mobile_sync": {
+      "id": "ekyte_mobile_sync",
+      "name": "ekyte_mobile_sync",
+      "description": "Sincronizar dados entre versão web e mobile do Ekyte",
+      "context": "https://ekyte.com/mobile-sync",
+      "selectors": [
+        ".sync-status",
+        ".mobile-settings",
+        ".offline-mode"
+      ],
+      "steps": [
+        "Verificar status de sincronização",
+        "Configurar sincronização automática",
+        "Resolver conflitos de dados",
+        "Ativar modo offline",
+        "Sincronizar quando online"
+      ],
+      "triggers": [
+        "sincronizar mobile",
+        "mobile sync",
+        "offline",
+        "sincronização"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:15:31.144Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_api_management": {
+      "id": "ekyte_api_management",
+      "name": "ekyte_api_management",
+      "description": "Gerenciar APIs e endpoints do sistema Ekyte",
+      "context": "https://ekyte.com/api-management",
+      "selectors": [
+        ".api-console",
+        ".endpoint-list",
+        ".rate-limiting"
+      ],
+      "steps": [
+        "Acessar console de API",
+        "Visualizar endpoints disponíveis",
+        "Configurar rate limiting",
+        "Gerenciar tokens de acesso",
+        "Monitorar uso da API"
+      ],
+      "triggers": [
+        "api",
+        "endpoints",
+        "gerenciar api",
+        "tokens"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:15:40.614Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_security_audit": {
+      "id": "ekyte_security_audit",
+      "name": "ekyte_security_audit",
+      "description": "Realizar auditoria de segurança e compliance no sistema Ekyte",
+      "context": "https://ekyte.com/security-audit",
+      "selectors": [
+        ".security-dashboard",
+        ".audit-logs",
+        ".compliance-check"
+      ],
+      "steps": [
+        "Acessar dashboard de segurança",
+        "Analisar logs de auditoria",
+        "Executar verificações de compliance",
+        "Identificar vulnerabilidades",
+        "Gerar relatório de segurança"
+      ],
+      "triggers": [
+        "auditoria",
+        "segurança",
+        "compliance",
+        "vulnerabilidades"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:15:51.174Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_email_templates": {
+      "id": "ekyte_email_templates",
+      "name": "ekyte_email_templates",
+      "description": "Criar e gerenciar templates de email no sistema Ekyte",
+      "context": "https://ekyte.com/email-templates",
+      "selectors": [
+        ".template-editor",
+        ".email-preview",
+        ".template-library"
+      ],
+      "steps": [
+        "Acessar editor de templates",
+        "Criar novo template",
+        "Personalizar design e conteúdo",
+        "Testar preview",
+        "Salvar na biblioteca"
+      ],
+      "triggers": [
+        "templates email",
+        "criar template",
+        "email marketing"
+      ],
+      "difficulty": "basic",
+      "createdAt": "2025-06-20T22:16:08.058Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "creation"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_social_media": {
+      "id": "ekyte_social_media",
+      "name": "ekyte_social_media",
+      "description": "Gerenciar publicações e campanhas de redes sociais através do Ekyte",
+      "context": "https://ekyte.com/social-media",
+      "selectors": [
+        ".social-composer",
+        ".post-scheduler",
+        ".analytics-social"
+      ],
+      "steps": [
+        "Acessar composer social",
+        "Criar conteúdo para redes",
+        "Agendar publicações",
+        "Monitorar engajamento",
+        "Analisar performance"
+      ],
+      "triggers": [
+        "redes sociais",
+        "social media",
+        "publicar",
+        "agendar posts"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:16:17.690Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_inventory_management": {
+      "id": "ekyte_inventory_management",
+      "name": "ekyte_inventory_management",
+      "description": "Gerenciar inventário, estoque e produtos no sistema Ekyte",
+      "context": "https://ekyte.com/inventory",
+      "selectors": [
+        ".inventory-grid",
+        ".stock-alerts",
+        ".product-catalog"
+      ],
+      "steps": [
+        "Acessar módulo de inventário",
+        "Visualizar produtos em estoque",
+        "Configurar alertas de baixo estoque",
+        "Atualizar quantidades",
+        "Gerar relatórios de inventário"
+      ],
+      "triggers": [
+        "inventário",
+        "estoque",
+        "produtos",
+        "inventory"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:16:27.199Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_financial_reports": {
+      "id": "ekyte_financial_reports",
+      "name": "ekyte_financial_reports",
+      "description": "Gerar e analisar relatórios financeiros no sistema Ekyte",
+      "context": "https://ekyte.com/financial-reports",
+      "selectors": [
+        ".financial-dashboard",
+        ".report-generator",
+        ".chart-builder"
+      ],
+      "steps": [
+        "Acessar dashboard financeiro",
+        "Selecionar período de análise",
+        "Configurar métricas",
+        "Gerar relatórios",
+        "Exportar análises"
+      ],
+      "triggers": [
+        "relatórios financeiros",
+        "finanças",
+        "financial reports",
+        "análise financeira"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:16:36.346Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_database_optimization": {
+      "id": "ekyte_database_optimization",
+      "name": "ekyte_database_optimization",
+      "description": "Otimizar performance e estrutura do banco de dados do Ekyte",
+      "context": "https://ekyte.com/database-admin",
+      "selectors": [
+        ".db-performance",
+        ".query-analyzer",
+        ".index-optimizer"
+      ],
+      "steps": [
+        "Acessar painel de administração DB",
+        "Analisar queries lentas",
+        "Otimizar índices",
+        "Executar limpeza de dados",
+        "Monitorar performance"
+      ],
+      "triggers": [
+        "otimizar database",
+        "performance db",
+        "banco de dados",
+        "database optimization"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:16:45.690Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "forms"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_crm_advanced": {
+      "id": "ekyte_crm_advanced",
+      "name": "ekyte_crm_advanced",
+      "description": "Funcionalidades avançadas de CRM incluindo automação de vendas",
+      "context": "https://ekyte.com/crm-advanced",
+      "selectors": [
+        ".sales-pipeline",
+        ".lead-scoring",
+        ".automation-rules"
+      ],
+      "steps": [
+        "Configurar pipeline de vendas",
+        "Definir lead scoring",
+        "Criar regras de automação",
+        "Configurar follow-ups",
+        "Analisar conversões"
+      ],
+      "triggers": [
+        "crm avançado",
+        "pipeline vendas",
+        "lead scoring",
+        "automação vendas"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:16:53.993Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_user_onboarding": {
+      "id": "ekyte_user_onboarding",
+      "name": "ekyte_user_onboarding",
+      "description": "Criar e gerenciar fluxos de onboarding para novos usuários",
+      "context": "https://ekyte.com/onboarding",
+      "selectors": [
+        ".onboarding-flow",
+        ".tutorial-steps",
+        ".progress-tracker"
+      ],
+      "steps": [
+        "Criar fluxo de onboarding",
+        "Definir etapas do tutorial",
+        "Configurar tooltips",
+        "Personalizar experiência",
+        "Acompanhar progresso"
+      ],
+      "triggers": [
+        "onboarding",
+        "tutorial",
+        "novos usuários",
+        "boas vindas"
+      ],
+      "difficulty": "basic",
+      "createdAt": "2025-06-20T22:17:03.251Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "creation"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_advanced_analytics": {
+      "id": "ekyte_advanced_analytics",
+      "name": "ekyte_advanced_analytics",
+      "description": "Análises avançadas com machine learning e predições",
+      "context": "https://ekyte.com/advanced-analytics",
+      "selectors": [
+        ".ml-models",
+        ".predictive-analytics",
+        ".data-mining"
+      ],
+      "steps": [
+        "Configurar modelos de ML",
+        "Executar análises preditivas",
+        "Criar dashboards avançados",
+        "Identificar padrões",
+        "Gerar insights automatizados"
+      ],
+      "triggers": [
+        "analytics avançado",
+        "machine learning",
+        "predições",
+        "data mining"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:17:12.006Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_webhook_management": {
+      "id": "ekyte_webhook_management",
+      "name": "ekyte_webhook_management",
+      "description": "Configurar e gerenciar webhooks para integrações em tempo real",
+      "context": "https://ekyte.com/webhooks",
+      "selectors": [
+        ".webhook-config",
+        ".event-triggers",
+        ".payload-builder"
+      ],
+      "steps": [
+        "Configurar endpoints de webhook",
+        "Definir eventos de trigger",
+        "Personalizar payload",
+        "Testar entrega",
+        "Monitorar falhas"
+      ],
+      "triggers": [
+        "webhooks",
+        "integrações tempo real",
+        "eventos",
+        "callbacks"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:17:38.910Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_team_collaboration": {
+      "id": "ekyte_team_collaboration",
+      "name": "ekyte_team_collaboration",
+      "description": "Facilitar colaboração em equipe com ferramentas de comunicação",
+      "context": "https://ekyte.com/collaboration",
+      "selectors": [
+        ".team-chat",
+        ".shared-workspace",
+        ".task-assignment"
+      ],
+      "steps": [
+        "Configurar espaços de equipe",
+        "Criar canais de comunicação",
+        "Atribuir tarefas",
+        "Compartilhar documentos",
+        "Acompanhar progresso"
+      ],
+      "triggers": [
+        "colaboração",
+        "equipe",
+        "team",
+        "comunicação"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:17:48.066Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_document_management": {
+      "id": "ekyte_document_management",
+      "name": "ekyte_document_management",
+      "description": "Organizar e gerenciar documentos com versionamento e controle de acesso",
+      "context": "https://ekyte.com/documents",
+      "selectors": [
+        ".document-library",
+        ".version-control",
+        ".access-permissions"
+      ],
+      "steps": [
+        "Organizar biblioteca de documentos",
+        "Fazer upload de arquivos",
+        "Controlar versões",
+        "Definir permissões",
+        "Buscar documentos"
+      ],
+      "triggers": [
+        "documentos",
+        "arquivos",
+        "versionamento",
+        "biblioteca"
+      ],
+      "difficulty": "intermediate",
+      "createdAt": "2025-06-20T22:17:57.516Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_calendar_scheduling": {
+      "id": "ekyte_calendar_scheduling",
+      "name": "ekyte_calendar_scheduling",
+      "description": "Gerenciar calendários, agendamentos e eventos no Ekyte",
+      "context": "https://ekyte.com/calendar",
+      "selectors": [
+        ".calendar-view",
+        ".event-scheduler",
+        ".availability-checker"
+      ],
+      "steps": [
+        "Visualizar calendário",
+        "Criar novos eventos",
+        "Verificar disponibilidade",
+        "Enviar convites",
+        "Configurar lembretes"
+      ],
+      "triggers": [
+        "calendário",
+        "agendar",
+        "eventos",
+        "scheduling"
+      ],
+      "difficulty": "basic",
+      "createdAt": "2025-06-20T22:18:06.222Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_system_monitoring": {
+      "id": "ekyte_system_monitoring",
+      "name": "ekyte_system_monitoring",
+      "description": "Monitorar performance, uptime e saúde do sistema Ekyte",
+      "context": "https://ekyte.com/monitoring",
+      "selectors": [
+        ".system-health",
+        ".performance-metrics",
+        ".alert-dashboard"
+      ],
+      "steps": [
+        "Verificar status do sistema",
+        "Monitorar métricas de performance",
+        "Configurar alertas",
+        "Analisar logs",
+        "Gerar relatórios de uptime"
+      ],
+      "triggers": [
+        "monitoramento",
+        "sistema",
+        "performance",
+        "uptime",
+        "saúde"
+      ],
+      "difficulty": "expert",
+      "createdAt": "2025-06-20T22:18:15.393Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "forms"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    },
+    "ekyte_chatbot_builder": {
+      "id": "ekyte_chatbot_builder",
+      "name": "ekyte_chatbot_builder",
+      "description": "Criar e configurar chatbots inteligentes para atendimento",
+      "context": "https://ekyte.com/chatbot-builder",
+      "selectors": [
+        ".bot-designer",
+        ".conversation-flow",
+        ".ai-training"
+      ],
+      "steps": [
+        "Acessar construtor de chatbot",
+        "Definir fluxos de conversa",
+        "Treinar modelo de IA",
+        "Configurar respostas",
+        "Testar e publicar"
+      ],
+      "triggers": [
+        "chatbot",
+        "bot",
+        "atendimento automático",
+        "ai chat"
+      ],
+      "difficulty": "advanced",
+      "createdAt": "2025-06-20T22:18:24.492Z",
+      "lastUsed": null,
+      "usageCount": 0,
+      "successRate": 0,
+      "confidence": 0.8,
+      "tags": [
+        "ekyte-platform",
+        "creation"
+      ],
+      "metadata": {},
+      "evolution": {
+        "version": 1,
+        "improvements": []
+      }
+    }
+  },
+  "learningHistory": [
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_create_campaign",
+      "timestamp": "2025-06-20T22:08:56.711Z",
+      "context": "https://ekyte.com/campaigns",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "campaigns",
+          "ekyte-platform",
+          "creation"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_login",
+      "timestamp": "2025-06-20T22:11:55.481Z",
+      "context": "https://ekyte.com/login",
+      "metadata": {
+        "difficulty": "basic",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_manage_tasks",
+      "timestamp": "2025-06-20T22:12:03.759Z",
+      "context": "https://ekyte.com/tasks",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "task-management",
+          "ekyte-platform",
+          "creation",
+          "editing"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_analyze_metrics",
+      "timestamp": "2025-06-20T22:12:11.319Z",
+      "context": "https://ekyte.com/dashboard",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_automate_workflow",
+      "timestamp": "2025-06-20T22:12:19.405Z",
+      "context": "https://ekyte.com/automation",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_process_notifications",
+      "timestamp": "2025-06-20T22:13:55.189Z",
+      "context": "https://ekyte.com/notifications",
+      "metadata": {
+        "difficulty": "basic",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_manage_clients",
+      "timestamp": "2025-06-20T22:14:02.960Z",
+      "context": "https://ekyte.com/clients",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_export_data",
+      "timestamp": "2025-06-20T22:14:10.653Z",
+      "context": "https://ekyte.com/export",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform",
+          "forms"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_configure_integrations",
+      "timestamp": "2025-06-20T22:14:17.630Z",
+      "context": "https://ekyte.com/integrations",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_manage_permissions",
+      "timestamp": "2025-06-20T22:14:55.745Z",
+      "context": "https://ekyte.com/admin/permissions",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_ai_optimization",
+      "timestamp": "2025-06-20T22:15:05.802Z",
+      "context": "https://ekyte.com/ai-optimization",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform",
+          "forms"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_backup_restore",
+      "timestamp": "2025-06-20T22:15:14.737Z",
+      "context": "https://ekyte.com/backup",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_custom_fields",
+      "timestamp": "2025-06-20T22:15:22.960Z",
+      "context": "https://ekyte.com/custom-fields",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform",
+          "creation"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_mobile_sync",
+      "timestamp": "2025-06-20T22:15:31.144Z",
+      "context": "https://ekyte.com/mobile-sync",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_api_management",
+      "timestamp": "2025-06-20T22:15:40.614Z",
+      "context": "https://ekyte.com/api-management",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_security_audit",
+      "timestamp": "2025-06-20T22:15:51.174Z",
+      "context": "https://ekyte.com/security-audit",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_email_templates",
+      "timestamp": "2025-06-20T22:16:08.058Z",
+      "context": "https://ekyte.com/email-templates",
+      "metadata": {
+        "difficulty": "basic",
+        "tags": [
+          "ekyte-platform",
+          "creation"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_social_media",
+      "timestamp": "2025-06-20T22:16:17.690Z",
+      "context": "https://ekyte.com/social-media",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_inventory_management",
+      "timestamp": "2025-06-20T22:16:27.199Z",
+      "context": "https://ekyte.com/inventory",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_financial_reports",
+      "timestamp": "2025-06-20T22:16:36.346Z",
+      "context": "https://ekyte.com/financial-reports",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_database_optimization",
+      "timestamp": "2025-06-20T22:16:45.690Z",
+      "context": "https://ekyte.com/database-admin",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform",
+          "forms"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_crm_advanced",
+      "timestamp": "2025-06-20T22:16:53.993Z",
+      "context": "https://ekyte.com/crm-advanced",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_user_onboarding",
+      "timestamp": "2025-06-20T22:17:03.251Z",
+      "context": "https://ekyte.com/onboarding",
+      "metadata": {
+        "difficulty": "basic",
+        "tags": [
+          "ekyte-platform",
+          "creation"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_advanced_analytics",
+      "timestamp": "2025-06-20T22:17:12.007Z",
+      "context": "https://ekyte.com/advanced-analytics",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_webhook_management",
+      "timestamp": "2025-06-20T22:17:38.910Z",
+      "context": "https://ekyte.com/webhooks",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_team_collaboration",
+      "timestamp": "2025-06-20T22:17:48.066Z",
+      "context": "https://ekyte.com/collaboration",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_document_management",
+      "timestamp": "2025-06-20T22:17:57.516Z",
+      "context": "https://ekyte.com/documents",
+      "metadata": {
+        "difficulty": "intermediate",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_calendar_scheduling",
+      "timestamp": "2025-06-20T22:18:06.223Z",
+      "context": "https://ekyte.com/calendar",
+      "metadata": {
+        "difficulty": "basic",
+        "tags": [
+          "ekyte-platform"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_system_monitoring",
+      "timestamp": "2025-06-20T22:18:15.393Z",
+      "context": "https://ekyte.com/monitoring",
+      "metadata": {
+        "difficulty": "expert",
+        "tags": [
+          "ekyte-platform",
+          "forms"
+        ],
+        "confidence": 0.8
+      }
+    },
+    {
+      "action": "skill_registered",
+      "skillId": "ekyte_chatbot_builder",
+      "timestamp": "2025-06-20T22:18:24.492Z",
+      "context": "https://ekyte.com/chatbot-builder",
+      "metadata": {
+        "difficulty": "advanced",
+        "tags": [
+          "ekyte-platform",
+          "creation"
+        ],
+        "confidence": 0.8
+      }
+    }
+  ],
+  "expertiseLevel": "Advanced Specialist",
+  "sessionData": {
+    "currentSession": "session_1750457904491_4ituzr9tc",
+    "totalSessions": 38,
+    "lastSessionTimestamp": "2025-06-20T22:18:24.491Z"
+  },
+  "interactionPatterns": []
+}
