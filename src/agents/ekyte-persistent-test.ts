@@ -1,6 +1,6 @@
 import { spawn, ChildProcess } from 'child_process';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { WebSocket } from 'ws';
 
 interface EkyteTestSession {
@@ -39,6 +39,7 @@ class EkytePersistentTest {
   private ws: WebSocket | null = null;
   private requestId = 1;
   private isConnected = false;
+  private readonly mcpToolsPath = resolve(__dirname, '../../mcp-bianca-tools');
 
   // Credenciais de login
   private readonly credentials = {
@@ -68,7 +69,7 @@ class EkytePersistentTest {
       
       // Iniciar o servidor MCP
       this.mcpProcess = spawn('node', ['build/index.js'], {
-        cwd: '/Users/phiz/Desktop/claude-flow-bianca/mcp-bianca-tools',
+        cwd: this.mcpToolsPath,
         stdio: ['pipe', 'pipe', 'pipe']
       });
 
@@ -204,7 +205,7 @@ class EkytePersistentTest {
     // Usar o método original como fallback
     const { execSync } = require('child_process');
     const paramsStr = Object.keys(params).length > 0 ? JSON.stringify(params) : '{}';
-    const command = `cd /Users/phiz/Desktop/claude-flow-bianca/mcp-bianca-tools && node run-mcp-tool.js ${tool} '${paramsStr}'`;
+    const command = `cd ${this.mcpToolsPath} && node run-mcp-tool.js ${tool} '${paramsStr}'`;
     const result = execSync(command, { encoding: 'utf8', timeout: 30000 });
     return JSON.parse(result);
   }

@@ -10,7 +10,7 @@ import * as path from 'path';
 import { MCPError, ErrorCode } from '../../types.js';
 
 // Path padrão para os agentes
-const DEFAULT_AGENTS_PATH = '/Users/phiz/Desktop/claude-flow-bianca/claude-bianca-flow/src/agents';
+const DEFAULT_AGENTS_PATH = path.resolve(__dirname, '../../../../claude-bianca-flow/src/agents');
 
 // Schemas de validação
 export const ListAgentsSchema = z.object({

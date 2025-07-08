@@ -64,7 +64,7 @@ export const mcpImprovementAgent = createMCPAgent(
  * Agente especializado em análise e melhoria do mcp-bianca-tools
  */
 export class MCPImprovementAgent extends MCPDirectAgent {
-  private readonly projectPath = '/Users/phiz/Desktop/claude-bianca-flow/mcp-bianca-tools';
+  private readonly projectPath = path.resolve(__dirname, '../../../mcp-bianca-tools');
   private improvements: Map<string, Improvement> = new Map();
   private readonly improvementQueueFile = path.join(this.projectPath, '.improvements-queue.json');
   private isInitialized = false;
