@@ -8,7 +8,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const PROJECT_PATH = '/Users/phiz/Desktop/claude-bianca-flow/mcp-bianca-tools';
+const PROJECT_PATH = path.resolve(__dirname, '../../mcp-bianca-tools');
 
 interface FileAnalysis {
   file: string;
